@@ -6,9 +6,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * Абстрактный класс с базовой функциональностью для команд
  */
 public abstract class AbstractCommand implements Command {
-    protected final String commandName;
+    private final String commandName;
 
-    protected AbstractCommand(String commandName) {
+    AbstractCommand(String commandName) {
         this.commandName = commandName;
     }
 
@@ -24,7 +24,7 @@ public abstract class AbstractCommand implements Command {
      * @param update объект с информацией о сообщении
      * @return массив аргументов команды
      */
-    protected String[] getArguments(Update update) {
+    public String[] getArguments(Update update) {
         String text = update.getMessage().getText();
         String[] parts = text.split("\\s+", 3);
         if (parts.length <= 1) {
