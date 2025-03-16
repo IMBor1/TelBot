@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,27 +43,38 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
+    @Transactional(readOnly = true)
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
+    /**
+     * Строит текстовое представление дерева категорий
+     *
+     * @return строка с деревом категорий
+     */
+    @Transactional(readOnly = true)
     public String buildTreeView() {
         List<Category> rootCategories = categoryRepository.findAll().stream()
                 .filter(category -> category.getParent() == null)
-                .toList();
-        
-        StringBuilder tree = new StringBuilder();
-        for (Category root : rootCategories) {
-            buildTreeRecursive(root, "", tree);
+                .collect(Collectors.toList());
+
+        if (rootCategories.isEmpty()) {
+            return "Дерево категорий пусто";
         }
-        return tree.toString();
+
+        StringBuilder result = new StringBuilder("Дерево категорий:\n");
+        for (Category root : rootCategories) {
+            buildTreeRecursive(root, "", result);
+        }
+        return result.toString();
     }
 
-    private void buildTreeRecursive(Category category, String prefix, StringBuilder tree) {
-        tree.append(prefix).append("└── ").append(category.getName()).append("\n");
-        String childPrefix = prefix + "    ";
+    private void buildTreeRecursive(Category category, String prefix, StringBuilder result) {
+        result.append(prefix).append("└─ ").append(category.getName()).append("\n");
+        String childPrefix = prefix + "   ";
         for (Category child : category.getChildren()) {
-            buildTreeRecursive(child, childPrefix, tree);
+            buildTreeRecursive(child, childPrefix, result);
         }
     }
 } 
