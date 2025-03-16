@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: TelBot
   datasource:
     url: jdbc:postgresql://localhost:5432/category_bot
     username: postgres
@@ -9,9 +11,8 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 bot:
-  username: Category_newBot
+  username: category_newBot
   token: 7514418381:AAEJvKL5dwVQRUpXMF7PNcLwoBPDTDgOTRk
