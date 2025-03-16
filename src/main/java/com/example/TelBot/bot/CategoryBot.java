@@ -67,6 +67,8 @@ public class CategoryBot extends TelegramLongPollingBot {
             KeyboardRow row2 = new KeyboardRow();
             row2.add("/addElement Продукты");
             row2.add("/addElement Продукты Фрукты");
+            row2.add("/addElement Продукты Овощи");
+            row2.add("/addElement Продукты Сладости");
             keyboard.add(row2);
 
             // Третий ряд с удалением
